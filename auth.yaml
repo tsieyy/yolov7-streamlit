@@ -7,7 +7,7 @@ credentials:
     zbh:
       email: rbriggs@gmail.com
       name: Rebecca Briggs
-      password: abc # To be replaced with hashed password
+      password: '$2b$12$vqJHdwdd0Cnhm4bzKG1o8OjMIAvd.fbbqZLVt9c2a53g.oE9vM6UO' # To be replaced with hashed password
 cookie:
   expiry_days: 30
   key: some_signature_key # Must be string
