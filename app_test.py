@@ -157,11 +157,8 @@ def showCode():
     st.markdown(source_code)
 
 
-def main(authenticator):
-    # -- Sidebar
-    st.sidebar.title('⚙️选项')
+def start_detect(authenticator):
     datasrc = st.sidebar.radio("💾选择输入源", ['💿从测试集中选择', '📀上传自己的数据'])
-
     option = st.sidebar.radio("📲选择输入类型", ['📷图片', '🎬视频', '📹摄像头'])
     if torch.cuda.is_available():
         deviceoption = st.sidebar.radio("💻选择计算资源", ['cpu', 'cuda'], disabled=False, index=1)
@@ -169,14 +166,14 @@ def main(authenticator):
         deviceoption = st.sidebar.radio("💻选择计算资源", ['cpu', 'cuda'], disabled=True, index=0)
 
     # show_code = st.sidebar.button("📄查看源代码")
-
     with st.sidebar:
         authenticator.logout('注销', 'main')
     # -- End of Sidebar
 
-    st.title('🚢船体检测')
-    st.header('👈 选择左侧功能')
-    #TODO 修改
+    st.title('🚢基于YOLOv7的船舶识别系统')
+    st.markdown('---')
+    # st.header('👈 选择左侧功能')
+    # TODO 修改
     # st.sidebar.markdown("https://github.com/thepbordin/Obstacle-Detection-for-Blind-people-Deployment")
     if option == "📷图片":
         imageInput(deviceoption, datasrc)
@@ -185,14 +182,22 @@ def main(authenticator):
     elif option == "📹摄像头":
         cameraInput(deviceoption, datasrc)
 
-    #展示代码
-    # if show_code:
-    #     showCode()
+
+def main(authenticator):
+    # -- Sidebar
+    st.sidebar.title('⚙️选项')
+    st.sidebar.write('👇请选择下列功能')
+    select = st.sidebar.selectbox("🥰想要做点什么？", ['启动检测程序', '查看源代码'])
+    st.sidebar.markdown('---')
+    if select == "启动检测程序":
+        start_detect(authenticator)
+    elif select == "查看源代码":
+        showCode()
 
 
 
 if __name__ == '__main__':
 
-    main()
+    main(opt)
 
 
