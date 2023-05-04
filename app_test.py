@@ -197,7 +197,7 @@ def showCode():
 
 def start_detect(authenticator):
     datasrc = st.sidebar.radio("💾选择输入源", ['💿从测试集中选择', '📀上传自己的数据'])
-    option = st.sidebar.radio("📲选择输入类型", ['📷图片', '🎬视频', '📹摄像头', '🌎️网络视频'])
+    option = st.sidebar.radio("📲选择输入类型", ['📷图片', '🎬视频', '📹摄像头'])
     if torch.cuda.is_available():
         deviceoption = st.sidebar.radio("💻选择计算资源", ['cpu', 'cuda'], disabled=False, index=1)
     else:
@@ -217,8 +217,8 @@ def start_detect(authenticator):
         videoInput(deviceoption, datasrc)
     elif option == "📹摄像头":
         cameraInput(deviceoption, datasrc)
-    # elif option == "🌎️网络视频":
-    #     webcamInput(deviceoption, datasrc)
+    #  elif option == "🌎️网络视频":
+    #      webcamInput(deviceoption, datasrc)
 
 
 
