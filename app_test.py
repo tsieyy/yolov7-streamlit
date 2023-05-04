@@ -187,7 +187,7 @@ def videoInput(device, src):
             video_bytes2 = st_video2.read()
             st.write("检测后的视频:")
             st.video(video_bytes2)
-        st.success('处理完成!')
+            st.success('处理完成!')
 
 
 
