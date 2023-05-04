@@ -1,13 +1,10 @@
 credentials:
   usernames:
-    czy:
+    zbh:
       email: tsieyy@qq.con
       name: czy
       password: '$2b$12$ZSTOCLzObztXFdtEj7QyD.QpQl360PA1RGJu./rZ/bncN6PhVsHZW' # To be replaced with hashed password
-    zbh:
-      email: rbriggs@gmail.com
-      name: Rebecca Briggs
-      password: '$2b$12$vqJHdwdd0Cnhm4bzKG1o8OjMIAvd.fbbqZLVt9c2a53g.oE9vM6UO' # To be replaced with hashed password
+
 cookie:
   expiry_days: 30
   key: some_signature_key # Must be string
