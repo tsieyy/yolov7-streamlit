@@ -3,6 +3,7 @@ import argparse
 import streamlit as st
 import torch
 from detect import detect, source_code
+# from detect_api import detectapi
 from PIL import Image
 from io import *
 import glob
@@ -153,28 +154,36 @@ def videoInput(device, src):
         imgpath = glob.glob('dataset/videos/*')
         imgsel = st.slider('滑动滑块选择视频吧！', min_value=0, max_value=len(imgpath), step=1)
         image_file = imgpath[imgsel - 1]
-        submit = st.button("开始检测！")
-        # col1, col2 = st.columns(2, gap='small')
-        with st.container():
+        c1, c2 = st.columns(2)
+        with c1:
+            submit = st.button("开始检测！")
+        with c2:
+            if image_file is not None and submit:
+                with st.spinner('正在处理文件，请稍等...'):
+                    time.sleep(5)
+                st.success('处理完成!')
+
+
+        col1, col2 = st.columns(2, gap='small')
+        with col1:
             # img = Image.open(image_file)
             st_video = open(image_file, 'rb')
             video_bytes = st_video.read()
             st.write("上传的视频:")
             st.video(video_bytes)
 
-        with st.container():
+        with col2:
             if image_file is not None and submit:
                 # call Model prediction--
                 opt.source = imgpath
-                with st.spinner('正在处理文件，请稍等...'):
-                    time.sleep(40)
-                st.success('处理完成!')
-                outputpath = os.path.join('dataset', 'video_output', 'video.mp4')
+                # time.sleep(5)
+                outputpath = os.path.join('dataset', 'video_output', 'video0.mp4')
                 # print(outputpath)
                 st_video2 = open(outputpath, 'rb')
                 video_bytes2 = st_video2.read()
                 st.write("检测后的视频:")
                 st.video(video_bytes2)
+
 
 
 
@@ -206,7 +215,7 @@ def start_detect(authenticator):
 
     # -- End of Sidebar
 
-    st.title('🚢基于YOLOv7的船舶识别系统')
+    st.title('🚢“鹰眼护航”智能船舶检测系统🚢')
     st.markdown('---')
     # st.header('👈 选择左侧功能')
     # TODO 修改

@@ -7,7 +7,10 @@ import streamlit_authenticator as stauth
 
 
 
+
 hashed_passwords = stauth.Hasher(['abc']).generate()
+
+
 
 # print(hashed_passwords)
 
@@ -22,7 +25,7 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days'],
     config['preauthorized']
 )
-name, authentication_status, username = authenticator.login('User Login', 'main')
+name, authentication_status, username = authenticator.login('🚢“鹰眼护航”智能船舶检测系统', 'main')
 # # 重置密码
 # if authentication_status:
 #     try:
@@ -39,6 +42,7 @@ name, authentication_status, username = authenticator.login('User Login', 'main'
 
 # 登录
 if authentication_status:
+    # st.title('')
     # with st.container():
     #     cols1,cols2 = st.columns(2)
     #     cols1.write('欢迎 *%s*' % (name))
