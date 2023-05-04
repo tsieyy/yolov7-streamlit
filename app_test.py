@@ -228,7 +228,7 @@ def main(authenticator):
     st.sidebar.title('⚙️选项')
     st.sidebar.write('👇请选择下列功能')
     select = st.sidebar.selectbox("🥰想要做点什么？", ['启动检测程序', '查看源代码'])
-    st.sidebar.markdown('---')
+    # st.sidebar.markdown('---')
     if select == "启动检测程序":
         start_detect(authenticator)
     elif select == "查看源代码":
