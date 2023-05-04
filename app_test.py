@@ -11,6 +11,7 @@ from datetime import datetime
 import os
 import wget
 import time
+from word import showInfo, showTrain, showFangan, showInstance, showQuestion
 
 ## CFG
 cfg_model_path = "best.pt"
@@ -239,10 +240,19 @@ def start_detect(authenticator):
 def main(authenticator):
     # -- Sidebar
     st.sidebar.title('⚙️选项')
-    st.sidebar.write('👇请选择下列功能')
-    select = st.sidebar.selectbox("🥰想要做点什么？", ['启动检测程序', '查看源代码'])
+    select = st.sidebar.selectbox('👇请选择下列功能', ['作品简介', '启动检测程序', '系统技术方案', '痛点问题分析', '数据集实例图', '训练效果图', '查看源代码'])
     # st.sidebar.markdown('---')
-    if select == "启动检测程序":
+    if select == "作品简介":
+        showInfo()
+    elif select == "系统技术方案":
+        showFangan()
+    elif select == "痛点问题分析":
+        showQuestion()
+    elif select == "数据集实例图":
+        showInstance()
+    elif select == "训练效果图":
+        showTrain()
+    elif select == "启动检测程序":
         start_detect(authenticator)
     elif select == "查看源代码":
         showCode()
