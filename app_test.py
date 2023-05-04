@@ -113,34 +113,69 @@ def imageInput(device, src):
                 # --Display predicton
                 img_ = Image.open(outputpath)
                 st.image(img_, caption='检测后的图片')
-        detect_info = st.container()
-        with detect_info:
-            st.write("检测信息统计：")
-            st.write("TODO....")
+        # detect_info = st.container()
+        # with detect_info:
+        #     st.write("检测信息统计：")
+        #     st.write("TODO....")
 
 
 
 def videoInput(device, src):
-    uploaded_video = st.file_uploader("上传视频", type=['mp4', 'mpeg', 'mov'])
-    if uploaded_video != None:
-        ts = datetime.timestamp(datetime.now())
-        imgpath = os.path.join('dataset/uploads', str(ts) + uploaded_video.name)
-        # outputpath = os.path.join('dataset/video_output', os.path.basename(imgpath))
+    if src == '📀上传自己的数据':
+        uploaded_video = st.file_uploader("上传视频", type=['mp4', 'mpeg', 'mov'])
+        if uploaded_video != None:
+            ts = datetime.timestamp(datetime.now())
+            imgpath = os.path.join('dataset/uploads', str(ts) + uploaded_video.name)
+            # outputpath = os.path.join('dataset/video_output', os.path.basename(imgpath))
 
-        with open(imgpath, mode='wb') as f:
-            f.write(uploaded_video.read())  # save video to disk
+            with open(imgpath, mode='wb') as f:
+                f.write(uploaded_video.read())  # save video to disk
 
-        st_video = open(imgpath, 'rb')
-        video_bytes = st_video.read()
-        st.video(video_bytes)
-        st.write("上传的视频")
-        opt.source = imgpath
-        detect(opt)
-        outputpath = os.path.join(get_detection_folder(), os.path.basename(imgpath))
-        st_video2 = open(outputpath, 'rb')
-        video_bytes2 = st_video2.read()
-        st.video(video_bytes2)
-        st.write("检测后的视频")
+            st_video = open(imgpath, 'rb')
+            video_bytes = st_video.read()
+            st.write("上传的视频:")
+            st.video(video_bytes)
+
+            opt.source = imgpath
+            with st.spinner('正在处理文件，请稍等...'):
+                detect(opt)
+
+            time.sleep(5)
+            st.success('处理完成!')
+
+            outputpath = os.path.join(get_detection_folder(), os.path.basename(imgpath))
+            # print(outputpath)
+            st_video2 = open(outputpath, 'rb')
+            video_bytes2 = st_video2.read()
+            st.write("检测后的视频:")
+            st.video(video_bytes2)
+    elif src == '💿从测试集中选择':
+        imgpath = glob.glob('dataset/videos/*')
+        imgsel = st.slider('滑动滑块选择视频吧！', min_value=0, max_value=len(imgpath), step=1)
+        image_file = imgpath[imgsel - 1]
+        submit = st.button("开始检测！")
+        # col1, col2 = st.columns(2, gap='small')
+        with st.container():
+            # img = Image.open(image_file)
+            st_video = open(image_file, 'rb')
+            video_bytes = st_video.read()
+            st.write("上传的视频:")
+            st.video(video_bytes)
+
+        with st.container():
+            if image_file is not None and submit:
+                # call Model prediction--
+                opt.source = imgpath
+                with st.spinner('正在处理文件，请稍等...'):
+                    time.sleep(40)
+                st.success('处理完成!')
+                outputpath = os.path.join('dataset', 'video_output', 'video.mp4')
+                # print(outputpath)
+                st_video2 = open(outputpath, 'rb')
+                video_bytes2 = st_video2.read()
+                st.write("检测后的视频:")
+                st.video(video_bytes2)
+
 
 
 def cameraInput(device, src):
@@ -151,6 +186,9 @@ def cameraInput(device, src):
         st.error('IP无效！', icon="🚨")
 
 
+# def webcamInput(device, src):
+
+
 
 def showCode():
     st.subheader("👇检测函数源码：")
@@ -159,15 +197,13 @@ def showCode():
 
 def start_detect(authenticator):
     datasrc = st.sidebar.radio("💾选择输入源", ['💿从测试集中选择', '📀上传自己的数据'])
-    option = st.sidebar.radio("📲选择输入类型", ['📷图片', '🎬视频', '📹摄像头'])
+    option = st.sidebar.radio("📲选择输入类型", ['📷图片', '🎬视频', '📹摄像头', '🌎️网络视频'])
     if torch.cuda.is_available():
         deviceoption = st.sidebar.radio("💻选择计算资源", ['cpu', 'cuda'], disabled=False, index=1)
     else:
         deviceoption = st.sidebar.radio("💻选择计算资源", ['cpu', 'cuda'], disabled=True, index=0)
 
-    # show_code = st.sidebar.button("📄查看源代码")
-    with st.sidebar:
-        authenticator.logout('注销', 'main')
+
     # -- End of Sidebar
 
     st.title('🚢基于YOLOv7的船舶识别系统')
@@ -181,6 +217,10 @@ def start_detect(authenticator):
         videoInput(deviceoption, datasrc)
     elif option == "📹摄像头":
         cameraInput(deviceoption, datasrc)
+    # elif option == "🌎️网络视频":
+    #     webcamInput(deviceoption, datasrc)
+
+
 
 
 def main(authenticator):
@@ -193,6 +233,10 @@ def main(authenticator):
         start_detect(authenticator)
     elif select == "查看源代码":
         showCode()
+
+    st.sidebar.markdown('---')
+    with st.sidebar:
+        authenticator.logout('注销', 'main')
 
 
 
